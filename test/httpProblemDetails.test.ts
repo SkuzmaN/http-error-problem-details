@@ -13,8 +13,8 @@ describe('given HttpProblemDetails', () => {
     beforeEach(() => {
       problem = new HttpProblemDetails({
         status: 403,
-        title: "You do not have enough credit.",
-        type: "https://example.com/probs/out-of-credit",
+        title: 'You do not have enough credit.',
+        type: 'https://example.com/probs/out-of-credit',
       });
     });
 
@@ -43,8 +43,8 @@ describe('given HttpProblemDetails', () => {
     beforeEach(() => {
       problem = new HttpProblemDetails({
         status: 403,
-        title: "You do not have enough credit.",
-        type: "https://example.com/probs/out-of-credit",
+        title: 'You do not have enough credit.',
+        type: 'https://example.com/probs/out-of-credit',
       });
     });
 
