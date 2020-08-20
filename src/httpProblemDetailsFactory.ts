@@ -1,4 +1,4 @@
-import { HttpProblemDetails } from './httpProblemDetails';
+import { HttpProblemDetail } from './httpProblemDetails';
 import { HttpProblemDetailsDefinition } from './httpProblemDetailsDefinition';
 
 export class HttpProblemDetailsFactory {
@@ -12,11 +12,11 @@ export class HttpProblemDetailsFactory {
     return this;
   }
 
-  get(type: string): HttpProblemDetails {
+  get(type: string): HttpProblemDetail {
     const data = this.schemas.get(type);
     if (!data) {
       throw new Error(`Can't find ${type} schema`);
     }
-    return new HttpProblemDetails(data);
+    return new HttpProblemDetail(data);
   }
 }

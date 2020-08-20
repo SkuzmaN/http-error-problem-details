@@ -1,36 +1,33 @@
 import { HttpProblemDetailsDefinition } from './httpProblemDetailsDefinition';
 
-const invalidDetailName = ['type', 'status', 'title'];
+const invalidDetailNames = ['type', 'status', 'title'];
 
-export class HttpProblemDetails {
+
+export class HttpProblemDetail {
   public readonly type: string;
   public readonly title: string;
   public readonly status: number;
-  private additionalDetails: Map<string, any>;
+  private additionalDetails: Record<string, any>;
 
   constructor({ type, title, status }: HttpProblemDetailsDefinition) {
     this.type = type;
     this.title = title;
     this.status = status;
-    this.additionalDetails = new Map<string, any>();
+    this.additionalDetails = {}
   }
 
   public addAdditionalDetail(key: string, value: any) {
-    if (invalidDetailName.includes(key)) {
+    if (invalidDetailNames.includes(key)) {
       throw new Error(`${key} is forbidden details name`);
     }
     if (value) {
-      this.additionalDetails.set(key, value);
+      this.additionalDetails[key] = value;
     }
   }
 
   toJson(): Record<string, any> {
-    const additionalDetails: Record<string, any> = {};
-    this.additionalDetails.forEach((value, key) => {
-      additionalDetails[key] = value;
-    });
     return {
-      ...additionalDetails,
+      ...this.additionalDetails,
       status: this.status,
       title: this.title,
       type: this.type,
