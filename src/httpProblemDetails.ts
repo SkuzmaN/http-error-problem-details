@@ -1,12 +1,15 @@
 import { HttpProblemDetailsDefinition } from './httpProblemDetailsDefinition';
 
-const invalidDetailNames = ['type', 'status', 'title'];
+const forbiddenDetailNames = ['type', 'status', 'title'];
+
+type URI = string;
+type HttpStatus = number;
 
 
 export class HttpProblemDetail {
-  public readonly type: string;
+  public readonly type: URI;
   public readonly title: string;
-  public readonly status: number;
+  public readonly status: HttpStatus;
   private additionalDetails: Record<string, any>;
 
   constructor({ type, title, status }: HttpProblemDetailsDefinition) {
@@ -17,7 +20,7 @@ export class HttpProblemDetail {
   }
 
   public addAdditionalDetail(key: string, value: any) {
-    if (invalidDetailNames.includes(key)) {
+    if (forbiddenDetailNames.includes(key)) {
       throw new Error(`${key} is forbidden details name`);
     }
     if (value) {
