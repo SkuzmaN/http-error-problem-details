@@ -5,7 +5,6 @@ const forbiddenDetailNames = ['type', 'status', 'title'];
 type URI = string;
 type HttpStatus = number;
 
-
 export class HttpProblemDetail {
   public readonly type: URI;
   public readonly title: string;
@@ -16,7 +15,7 @@ export class HttpProblemDetail {
     this.type = type;
     this.title = title;
     this.status = status;
-    this.additionalDetails = {}
+    this.additionalDetails = {};
   }
 
   public addAdditionalDetail(key: string, value: any) {
