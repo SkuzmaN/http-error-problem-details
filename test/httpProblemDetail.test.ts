@@ -2,8 +2,8 @@ import { HttpProblemDetail } from '../src';
 import Joi from '@hapi/joi';
 
 export const problemSchema = Joi.object({
-  type: Joi.string().required(),
-  title: Joi.string().required(),
+  type: Joi.string(),
+  title: Joi.string(),
   status: Joi.number().required(),
 }).required();
 
@@ -40,32 +40,57 @@ describe('given HttpProblemDetail', () => {
 
   describe('when parse to JSON', () => {
     let problem: HttpProblemDetail;
+    let problemSchema: Joi.ObjectSchema<any>;
     beforeEach(() => {
       problem = new HttpProblemDetail({
         status: 403,
         title: 'You do not have enough credit.',
         type: 'https://example.com/probs/out-of-credit',
       });
+      problemSchema = Joi.object({
+        type: Joi.string().required(),
+        title: Joi.string().required(),
+        status: Joi.number().required(),
+      }).required();
     });
 
-    it('return required params - type, title & status', () => {
+    it('return passed basic params', () => {
       expect(() => {
-        Joi.assert(problem.toJson(), problemSchema, {
-          allowUnknown: true,
-        });
+        Joi.assert(problem.toJson(), problemSchema);
       }).not.toThrow();
     });
 
     it('return additional passed params', () => {
-      problem.addAdditionalDetail('lorem', 'ipsum');
-      expect(problem.toJson().lorem).toEqual('ipsum');
+      const detailName = 'lorem';
+      problem.addAdditionalDetail(detailName, 'ipsum');
+      expect(() => {
+        Joi.assert(
+          problem.toJson(),
+          problemSchema.concat(
+            Joi.object({
+              [detailName]: Joi.string().required(),
+            })
+          )
+        );
+      }).not.toThrow();
     });
 
     it('ignore empty params', () => {
-      problem.addAdditionalDetail('lorem', '');
-      expect(problem.toJson().lorem).toBe(undefined);
+      const detailName = 'lorem';
+      problem.addAdditionalDetail(detailName, '');
+      expect(() => {
+        Joi.assert(
+          problem.toJson(),
+          problemSchema.concat(
+            Joi.object({
+              [detailName]: Joi.string().forbidden(),
+            })
+          )
+        );
+      }).not.toThrow();
     });
   });
+
   describe("when doesn't provide a type value", () => {
     it('should set type as about:blank', () => {
       const problem = new HttpProblemDetail({
