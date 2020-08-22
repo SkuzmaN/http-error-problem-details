@@ -1,2 +1,2 @@
-export * from './httpProblemDetails';
-export * from './httpProblemDetailsFactory';
+export * from './httpProblemDetail';
+export * from './httpProblemDetailFactory';

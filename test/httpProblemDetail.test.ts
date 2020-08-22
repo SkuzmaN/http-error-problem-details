@@ -1,4 +1,4 @@
-import { HttpProblemDetails } from '../src/httpProblemDetails';
+import { HttpProblemDetail } from '../src';
 import Joi from '@hapi/joi';
 
 export const problemSchema = Joi.object({
@@ -7,11 +7,11 @@ export const problemSchema = Joi.object({
   status: Joi.number().required(),
 }).required();
 
-describe('given HttpProblemDetails', () => {
+describe('given HttpProblemDetail', () => {
   describe('when adding additional details', () => {
-    let problem: HttpProblemDetails;
+    let problem: HttpProblemDetail;
     beforeEach(() => {
-      problem = new HttpProblemDetails({
+      problem = new HttpProblemDetail({
         status: 403,
         title: 'You do not have enough credit.',
         type: 'https://example.com/probs/out-of-credit',
@@ -39,9 +39,9 @@ describe('given HttpProblemDetails', () => {
   });
 
   describe('when parse to JSON', () => {
-    let problem: HttpProblemDetails;
+    let problem: HttpProblemDetail;
     beforeEach(() => {
-      problem = new HttpProblemDetails({
+      problem = new HttpProblemDetail({
         status: 403,
         title: 'You do not have enough credit.',
         type: 'https://example.com/probs/out-of-credit',
