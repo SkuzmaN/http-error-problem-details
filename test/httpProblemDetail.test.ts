@@ -1,21 +1,17 @@
 import { HttpProblemDetail } from '../src';
 import Joi from '@hapi/joi';
 
-export const problemSchema = Joi.object({
-  type: Joi.string(),
-  title: Joi.string(),
-  status: Joi.number().required(),
-}).required();
+const testProblemDetailDefition = {
+  status: 403,
+  title: 'You do not have enough credit.',
+  type: 'https://example.com/probs/out-of-credit',
+};
 
 describe('given HttpProblemDetail', () => {
   describe('when adding additional details', () => {
     let problem: HttpProblemDetail;
     beforeEach(() => {
-      problem = new HttpProblemDetail({
-        status: 403,
-        title: 'You do not have enough credit.',
-        type: 'https://example.com/probs/out-of-credit',
-      });
+      problem = new HttpProblemDetail(testProblemDetailDefition);
     });
 
     it('throw an error when try to overrite status', () => {
@@ -91,13 +87,48 @@ describe('given HttpProblemDetail', () => {
     });
   });
 
-  describe("when doesn't provide a type value", () => {
-    it('should set type as about:blank', () => {
-      const problem = new HttpProblemDetail({
+  describe("when doesn't provide type but pass title", () => {
+    let problem: HttpProblemDetail;
+    beforeEach(() => {
+      problem = new HttpProblemDetail({
         status: 403,
         title: 'You do not have enough credit.',
       });
+    });
+
+    it('set type as about:blank', () => {
       expect(problem.type).toEqual('about:blank');
+    });
+
+    it('use passed title', () => {
+      expect(problem.title).toEqual('You do not have enough credit.');
+    });
+  });
+
+  describe("when doesn't provide type and title", () => {
+    it('define title based on the status', () => {
+      const problem = new HttpProblemDetail({
+        status: 403,
+      });
+      expect(problem.title).toEqual('Forbidden');
+    });
+
+    it('throw an error when use http status code not defined in RFC1945, RFC2616, RFC2518, RFC6585 or RFC7538', () => {
+      expect(() => {
+        new HttpProblemDetail({
+          status: -1,
+        });
+      }).toThrowError();
+    });
+  });
+
+  describe("when doesn't pass title", () => {
+    it('leave title undefined', () => {
+      const problem = new HttpProblemDetail({
+        status: 403,
+        type: 'https://example.com/probs/out-of-credit',
+      });
+      expect(problem.title).toEqual(undefined);
     });
   });
 });
