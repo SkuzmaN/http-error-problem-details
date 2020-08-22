@@ -1,14 +1,12 @@
 import { HttpProblemDetailsDefinition } from './httpProblemDetailsDefinition';
+import { URI, HttpStatusCode } from './types';
 
 const forbiddenDetailNames = ['type', 'status', 'title'];
-
-type URI = string;
-type HttpStatus = number;
 
 export class HttpProblemDetail {
   public readonly type: URI;
   public readonly title: string;
-  public readonly status: HttpStatus;
+  public readonly status: HttpStatusCode;
   private additionalDetails: Record<string, any>;
 
   constructor({ type, title, status }: HttpProblemDetailsDefinition) {

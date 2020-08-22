@@ -1,5 +1,7 @@
+import { URI, HttpStatusCode } from './types';
+
 export interface HttpProblemDetailsDefinition {
-  type: string;
+  type: URI;
   title: string;
-  status: number;
+  status: HttpStatusCode;
 }
