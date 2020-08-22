@@ -66,4 +66,13 @@ describe('given HttpProblemDetail', () => {
       expect(problem.toJson().lorem).toBe(undefined);
     });
   });
+  describe("when doesn't provide a type value", () => {
+    it('should set type as about:blank', () => {
+      const problem = new HttpProblemDetail({
+        status: 403,
+        title: 'You do not have enough credit.',
+      });
+      expect(problem.type).toEqual('about:blank');
+    });
+  });
 });

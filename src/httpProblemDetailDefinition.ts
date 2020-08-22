@@ -1,7 +1,7 @@
 import { URI, HttpStatusCode } from './types';
 
 export interface HttpProblemDetailDefinition {
-  type: URI;
+  type?: URI;
   title: string;
   status: HttpStatusCode;
 }

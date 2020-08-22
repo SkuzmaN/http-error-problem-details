@@ -3,6 +3,8 @@ import { URI, HttpStatusCode } from './types';
 
 const forbiddenDetailNames = ['type', 'status', 'title'];
 
+const defaultType = 'about:blank';
+
 export class HttpProblemDetail {
   public readonly type: URI;
   public readonly title: string;
@@ -10,7 +12,7 @@ export class HttpProblemDetail {
   private additionalDetails: Record<string, any>;
 
   constructor({ type, title, status }: HttpProblemDetailDefinition) {
-    this.type = type;
+    this.type = type || defaultType;
     this.title = title;
     this.status = status;
     this.additionalDetails = {};
