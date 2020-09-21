@@ -1,6 +1,6 @@
 # Http Problem Details
 
-This package is implementation of the [RFC7807 Problem Details for HTTP APIs](rfc-editor.org/rfc/rfc7807.html).
+This package is implementation of the [RFC7807 Problem Details for HTTP APIs](https://tools.ietf.org/html/rfc7807).
 
 ## Instalation
 
