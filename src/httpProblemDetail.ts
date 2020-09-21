@@ -1,0 +1,38 @@
+import { HttpProblemDetailDefinition } from './httpProblemDetailDefinition';
+import { URI, HttpStatusCode, Serializable } from './types';
+
+const forbiddenDetailNames = ['type', 'status', 'title'];
+
+const defaultType = 'about:blank';
+
+export class HttpProblemDetail {
+  public readonly type: URI;
+  public readonly title: string;
+  public readonly status: HttpStatusCode;
+  private readonly additionalDetails: Record<string, any>;
+
+  constructor({ type, title, status }: HttpProblemDetailDefinition) {
+    this.type = type || defaultType;
+    this.title = title;
+    this.status = status;
+    this.additionalDetails = {};
+  }
+
+  public addAdditionalDetail(key: string, value: Serializable) {
+    if (forbiddenDetailNames.includes(key)) {
+      throw new Error(`${key} is forbidden details name`);
+    }
+    if (value) {
+      this.additionalDetails[key] = value;
+    }
+  }
+
+  toPlainObject(): Record<string, Serializable> {
+    return {
+      ...this.additionalDetails,
+      status: this.status,
+      title: this.title,
+      type: this.type,
+    };
+  }
+}
