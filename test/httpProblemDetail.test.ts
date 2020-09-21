@@ -38,7 +38,7 @@ describe('given HttpProblemDetail', () => {
     });
   });
 
-  describe('when parse to JSON', () => {
+  describe('when converting to plain object', () => {
     let problem: HttpProblemDetail;
     let problemSchema: Joi.ObjectSchema<any>;
     beforeEach(() => {
@@ -56,7 +56,7 @@ describe('given HttpProblemDetail', () => {
 
     it('return passed basic params', () => {
       expect(() => {
-        Joi.assert(problem.toJson(), problemSchema);
+        Joi.assert(problem.toPlainObject(), problemSchema);
       }).not.toThrow();
     });
 
@@ -65,7 +65,7 @@ describe('given HttpProblemDetail', () => {
       problem.addAdditionalDetail(detailName, 'ipsum');
       expect(() => {
         Joi.assert(
-          problem.toJson(),
+          problem.toPlainObject(),
           problemSchema.concat(
             Joi.object({
               [detailName]: Joi.string().required(),
@@ -80,7 +80,7 @@ describe('given HttpProblemDetail', () => {
       problem.addAdditionalDetail(detailName, '');
       expect(() => {
         Joi.assert(
-          problem.toJson(),
+          problem.toPlainObject(),
           problemSchema.concat(
             Joi.object({
               [detailName]: Joi.string().forbidden(),

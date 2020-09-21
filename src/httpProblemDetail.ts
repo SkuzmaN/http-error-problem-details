@@ -1,5 +1,5 @@
 import { HttpProblemDetailDefinition } from './httpProblemDetailDefinition';
-import { URI, HttpStatusCode } from './types';
+import { URI, HttpStatusCode, Serializable } from './types';
 
 const forbiddenDetailNames = ['type', 'status', 'title'];
 
@@ -9,7 +9,7 @@ export class HttpProblemDetail {
   public readonly type: URI;
   public readonly title: string;
   public readonly status: HttpStatusCode;
-  private additionalDetails: Record<string, any>;
+  private readonly additionalDetails: Record<string, any>;
 
   constructor({ type, title, status }: HttpProblemDetailDefinition) {
     this.type = type || defaultType;
@@ -18,7 +18,7 @@ export class HttpProblemDetail {
     this.additionalDetails = {};
   }
 
-  public addAdditionalDetail(key: string, value: any) {
+  public addAdditionalDetail(key: string, value: Serializable) {
     if (forbiddenDetailNames.includes(key)) {
       throw new Error(`${key} is forbidden details name`);
     }
@@ -27,7 +27,7 @@ export class HttpProblemDetail {
     }
   }
 
-  toJson(): Record<string, any> {
+  toPlainObject(): Record<string, Serializable> {
     return {
       ...this.additionalDetails,
       status: this.status,
