@@ -24,6 +24,10 @@ export class HttpProblemDetail {
       this.title = title;
     } else if (type === defaultType) {
       this.title = getStatusText(status);
+    } else {
+      throw new Error(
+        `You can only omit title when passing ${defaultType} type`
+      );
     }
   }
 
@@ -40,7 +44,7 @@ export class HttpProblemDetail {
     return {
       ...this.additionalDetails,
       status: this.status,
-      title: this.title,
+      title: this.title || null,
       type: this.type,
     };
   }

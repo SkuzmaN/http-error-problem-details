@@ -123,12 +123,13 @@ describe('given HttpProblemDetail', () => {
   });
 
   describe("when doesn't pass title", () => {
-    it('leave title undefined', () => {
-      const problem = new HttpProblemDetail({
-        status: 403,
-        type: 'https://example.com/probs/out-of-credit',
-      });
-      expect(problem.title).toEqual(undefined);
+    it('throw an error', () => {
+      expect(() => {
+        new HttpProblemDetail({
+          status: 403,
+          type: 'https://example.com/probs/out-of-credit',
+        });
+      }).toThrowError();
     });
   });
 });
